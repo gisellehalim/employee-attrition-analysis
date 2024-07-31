@@ -28,20 +28,20 @@ https://app.powerbi.com/links/jTjsmmyjnf?ctid=0127957a-1dfd-4219-ba67-9031b9d385
 Pada proyek ini dibangun model untuk memprediksi potensi keluarnya karyawan dari perusahaan. Ini dilakukan dengan melatih model menggunakan data karyawan dengan status attrition mereka menjadi variabel target. Model yang digunakan adalah XGBoost tanpa ada pengaturan hyperparameter. Dipilih algoritma XGBoost karena efisien dalam menangani data yang besar, meningkatkan akurasi, dan mengoptimalkan waktu komputasi.
 
 **Tahapan membagi data training dan testing**
-Data memiliki 1 kolom identitas (EmployeeID) dan 2 kolom yang tidak memiliki kegunaan (karena isinya sama dan tidak ada perbedaan), sehingga ketiga kolom tersebut dihapus saat memproses data untuk training. Kolom identitas harus dihapus untuk mencegah terjadinya overfitting pada model yang dibuat, karena jika ada identitas pembeda, model akan belajar untuk menghafal identitas tersebut bukan melihat pola. Sedangkan untuk dua kolom lainnya yang dihapus, ini harus dilakukan karena valuenya sama dan tidak akan memberikan kontribusi pada pelatihan model.
-
 Pada dataset, ada data yang kosong pada kolom attrition, sehingga dilakukan penghapusan data null pada awal load dataset.
 
 Beberapa kolom bersifat kategorikal sehingga harus diubah ke numerik agar dapat digunakan model. Dilakukan labelling value kolom-kolom tersebut dengan mapping value menggunakan LabelEncoder.
 
-Setelah labelling data, ditentukan variabel x berupa kolom-kolom data karyawan dan variabel y berupa status attrition. 
+Setelah itu, dilihat korelasi antar kolom pada dataset untuk melihat kolom mana yang paling berpengaruh pada pembuatan model. Ini dilakukan untuk 
 
-Selanjutnya, dilakukan balancing data dengan metode oversampling SMOTE karena jumlah data tidak seimbang. Balancing data dilakukan agar model dapat mencapai akurasi yang lebih tinggi. Pemilihan oversampling adalah karena dengan data yang sedikit, melakukan undersampling akan semakin mengurangi jumlah data dan berpotensi untuk menurunkan akurasi. Dengan metode oversampling SMOTE, kelas minoritas (pada kasus ini adalah kelas "1" atau keluar dari perusahaan) akan ditambahkan jumlah datanya dengan membuat data sintesis.
+Lalu, ditentukan variabel x berupa kolom-kolom data karyawan dan variabel y berupa status attrition. 
 
 Dataset lalu dibagi menjadi train dan test dengan rasio 80:20.
 Alasan kenapa ditetapkan jumlah tersebut adalah karena pada umumnya 80/20 dianggap cukup baik (kecuali jika data training sangatlah banyak, maka rasio data split bisa berubah). Pada dataset ini, jumlah kolom tidak terlalu banyak sehingga diperlukan data *training* yang cukup untuk memastikan model terlatih dengan baik.
 
 Dengan pengaturan random_state = 42, dataset akan mengeluarkan data acak yang sama untuk data training dan data testing. Melalui konfigurasi pembagian ini, didapat data training sebanyak 80% dari dataset dan data testing sebanyak 20% dari dataset.
+
+Selanjutnya, dilakukan balancing data dengan metode oversampling SMOTE karena jumlah data tidak seimbang. Balancing data dilakukan agar model dapat mencapai akurasi yang lebih tinggi. Pemilihan oversampling adalah karena dengan data yang sedikit, melakukan undersampling akan semakin mengurangi jumlah data dan berpotensi untuk menurunkan akurasi. Dengan metode oversampling SMOTE, kelas minoritas (pada kasus ini adalah kelas "1" atau keluar dari perusahaan) akan ditambahkan jumlah datanya dengan membuat data sintesis.
 
 **Tahapan membangun model XGBoost**
 
@@ -80,10 +80,7 @@ $$F1-score = 2 * (Precision * Recall) / (Precision + Recall)$$
 
 **Hasil Pengukuran Metrik**
 
-![XGBoost](https://i.ibb.co/m62MmKK/XGBoost-CM.png)
-Gambar 1
-
-Berdasarkan hasil pengukuran metrik pada algoritma XGBoost, algoritma telah menunjukkan performa yang cukup baik dalam mengidentifikasi kedua kelas dengan akurasi 0,93 dan nilai precision, recall, serta f1-score yang juga mencapai 0,93. Skor AUC juga menunjukkan kinerja model yang baik dengan skor 0,932. Ini menunjukkan bahwa model mampu memprediksi potensi attrition seorang karyawan dengan cukup akurat. Selain itu dapat dilihat pada Gambar 1 diatas, hasil confusion matrix menunjukkan model mampu mencari pola yang mempengaruhi keluarnya karyawan dari perusahaan.
+Berdasarkan hasil pengukuran metrik pada algoritma XGBoost, algoritma telah menunjukkan performa yang cukup baik dalam mengidentifikasi kedua kelas dengan akurasi 0,83 dan nilai precision, recall, serta f1-score yang juga mencapai 0,72. Skor AUC juga menunjukkan kinerja model yang cukup baik dengan skor 0,72. Ini menunjukkan bahwa model mampu memprediksi potensi attrition seorang karyawan secara umum, tetapi karena ketidakseimbangan data, model kesulitan untuk memprediksi kelas "1" atau attrition.
 
 ## Prediction
 Model dapat diuji dengan file 'Prediction' yang akan memprediksi status attrtition karyawan dengan model XGBoost yang telah disimpan dalam file .pkl. Untuk memprediksi, cukup menjalankan kode dan mengubah baris data yang ingin diprediksi dengan mengganti nilai variabel 'row_index'. File ini akan memperlihatkan hasil prediksi dengan label sebenarnya.
