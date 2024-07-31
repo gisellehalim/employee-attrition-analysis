@@ -1,178 +1,178 @@
-# Proyek Akhir: Menyelesaikan Permasalahan Perusahaan Edutech
+# Final Project: Solving Human Resources Problem of an Edutech Company
 
 ## Business Understanding
-Jaya Jaya Maju merupakan perusahaan multinasional yang didirikan pada tahun 2000. Perusahaan ini memiliki lebih dari 1000 karyawan yang tersebar di seluruh penjuru negeri. Perusahaan besar seperti Jaya Jaya Maju membutuhkan data untuk menyelesaikan berbagai permasalahan dalam perusahaan. Data membantu perusahaan untuk mengambil keputusan yang terarah sesuai data.
+Jaya Jaya Maju is a multinational company established in 2000. The company has more than 1000 employees spread across the country. Large companies like Jaya Jaya Maju need data to solve various problems within the company. Data helps companies to make data-driven decisions.
 
-### Permasalahan Bisnis
-Jaya Jaya Maju sedang mengalami kesulitan dalam mengelola karyawan. Hal ini berimbas pada tingginya attrition rate (rasio jumlah karyawan yang keluar dengan total karyawan keseluruhan) hingga lebih dari 10%. Jumlah ini terbilang cukup tinggi dan akan berbahaya jika dibiarkan begitu saja. Hal inilah yang menyebabkan perusahaan Jaya Jaya Maju membutuhkan analisis data untuk melihat pengaruh apa saja yang menyebabkan tingginya attrition rate. 
+### Business Problems
+Jaya Jaya Maju is experiencing difficulties in managing employees. This resulted in a high attrition rate (the ratio of the number of employees who left to the total number of employees) of more than 10%. This number is quite high and will be dangerous if left unchecked. This is why Jaya Jaya Maju company needs data analysis to see what influences cause the high attrition rate. 
 
-### Cakupan Proyek
-Pada proyek ini akan dilakukan 2 tugas, yaitu:
-- Analisis data secara menyeluruh untuk melihat faktor-faktor yang menentukan keluarnya karyawan.
-- Pembuatan model machine learning dengan algoritma XGBoost untuk membantu perusahaan memprediksi potensi keluarnya seorang karyawan. Model akan dibuat di file yang sama dengan exploratory data analysis.
+### Project Scope
+In this project, 2 tasks will be carried out, namely:
+- Thorough data analysis to see the factors that determine employee departure.
+- Create a machine learning model with XGBoost algorithm to help companies predict the potential exit of an employee. The model will be created in the same file as the exploratory data analysis.
 
-### Persiapan
+### Preparation
 
-Sumber data: Data berikan dari Dicoding untuk mengerjakan proyek akhir (Dengan nama perusahaan Jaya Jaya Maju). Tetapi, data asli berasal dari IBM HR Analytics.
+Data source: Data provided by Dicoding for the final project (under the company name Jaya Jaya Maju). However, the original data comes from IBM HR Analytics.
 
-Setup environment: Tidak dilakukan setup environment karena pengerjaan dilakukan di Google Colab dan dashboard dibuat dengan Microsoft PowerBI.
+Setup environment: No environment setup was done because the work was done in Google Colab and the dashboard was created with Microsoft PowerBI.
 
 ## Business Dashboard
 
-Business dashboard yang dibuat memperlihatkan faktor-faktor keluarnya karyawan dari perusahaan. Dashboard membahas beberapa faktor, seperti demografis, pengalaman bekerja, pengalaman di kantor, gaji, jarak dari rumah, dan lainnya. Isi dari dashboard ini hanya memperlihatkan perbandingan secara umum dan tidak terlalu mendetil seperti pada kode Python. Dashboard ini dibuat dengan Microsoft PowerBI yang merupakan tools sejenis Tableau dan Looker Studio. Data yang digunakan adalah 'employee_data_clean' (terlampir pada folder data) yang telah dibersihkan datanya sehingga tidak ada null value dan angka rating dibuat agar lebih rapi dilihat.
+The business dashboard created shows the factors of employee departure from the company. The dashboard discusses several factors, such as demographics, work experience, experience in the office, salary, distance from home, and others. The content of this dashboard only shows a general comparison and is not too detailed like in Python code. This dashboard was created with Microsoft PowerBI which is a similar tool to Tableau and Looker Studio. The data used is 'employee_data_clean' (attached to the data folder) which has been cleaned so that there are no null values and the rating numbers are made to be more neat to see.
 
-Link Dashboard:
-https://app.powerbi.com/links/jTjsmmyjnf?ctid=0127957a-1dfd-4219-ba67-9031b9d3857e&pbi_source=linkShare (link dashboard ini hanya dapat diakses jika memiliki akun Microsoft PowerBI Premium)
+Dashboard Link:
+https://app.powerbi.com/links/jTjsmmyjnf?ctid=0127957a-1dfd-4219-ba67-9031b9d3857e&pbi_source=linkShare (this dashboard link can only be accessed if you have a Microsoft PowerBI Premium account)
 
 ## Modeling
-Pada proyek ini dibangun model untuk memprediksi potensi keluarnya karyawan dari perusahaan. Ini dilakukan dengan melatih model menggunakan data karyawan dengan status attrition mereka menjadi variabel target. Model yang digunakan adalah XGBoost tanpa ada pengaturan hyperparameter. Dipilih algoritma XGBoost karena efisien dalam menangani data yang besar, meningkatkan akurasi, dan mengoptimalkan waktu komputasi.
+In this project, a model was built to predict the potential exit of employees from the company. This is done by training the model using employee data with their attrition status being the target variable. The model used is XGBoost without any hyperparameter settings. The XGBoost algorithm was chosen because it is efficient in handling large data, improving accuracy, and optimizing computation time.
 
-**Tahapan membagi data training dan testing**
-Pada dataset, ada data yang kosong pada kolom attrition, sehingga dilakukan penghapusan data null pada awal load dataset.
+**Stage of dividing training and testing data**
+In the dataset, there is empty data in the attrition column, so null data is removed at the beginning of the dataset load.
 
-Beberapa kolom bersifat kategorikal sehingga harus diubah ke numerik agar dapat digunakan model. Dilakukan labelling value kolom-kolom tersebut dengan mapping value menggunakan LabelEncoder.
+Some columns are categorical, so they must be converted to numeric in order to use the model. The columns were labeled with mapping value using LabelEncoder.
 
-Setelah itu, dilihat korelasi antar kolom pada dataset untuk melihat kolom mana yang paling berpengaruh pada pembuatan model. Ini dilakukan untuk 
+After that, we looked at the correlation between columns in the dataset to see which column has the most influence on attrition. This was done to ensure optimal model performance by including important columns.
 
-Lalu, ditentukan variabel x berupa kolom-kolom data karyawan dan variabel y berupa status attrition. 
+Then, the x variable is determined in the form of employee data columns and the y variable is the attrition status. 
 
-Dataset lalu dibagi menjadi train dan test dengan rasio 80:20.
-Alasan kenapa ditetapkan jumlah tersebut adalah karena pada umumnya 80/20 dianggap cukup baik (kecuali jika data training sangatlah banyak, maka rasio data split bisa berubah). Pada dataset ini, jumlah kolom tidak terlalu banyak sehingga diperlukan data *training* yang cukup untuk memastikan model terlatih dengan baik.
+The dataset was then divided into train and test with a ratio of 80:20.
+The reason why this number is set is because 80/20 is generally considered good enough (unless the training data is very large, then the split data ratio can be changed). In this dataset, the number of columns is not too large so enough *training* data is needed to ensure the model is well trained.
 
-Dengan pengaturan random_state = 42, dataset akan mengeluarkan data acak yang sama untuk data training dan data testing. Melalui konfigurasi pembagian ini, didapat data training sebanyak 80% dari dataset dan data testing sebanyak 20% dari dataset.
+By setting random_state = 42, the dataset will output the same random data for training data and testing data. Through this sharing configuration, we get 80% of the training data from the dataset and 20% of the testing data from the dataset.
 
-Selanjutnya, dilakukan balancing data dengan metode oversampling SMOTE karena jumlah data tidak seimbang. Balancing data dilakukan agar model dapat mencapai akurasi yang lebih tinggi. Pemilihan oversampling adalah karena dengan data yang sedikit, melakukan undersampling akan semakin mengurangi jumlah data dan berpotensi untuk menurunkan akurasi. Dengan metode oversampling SMOTE, kelas minoritas (pada kasus ini adalah kelas "1" atau keluar dari perusahaan) akan ditambahkan jumlah datanya dengan membuat data sintesis.
+Next, data balancing is done with the SMOTE oversampling method because the amount of data is not balanced. Data balancing is done so that the model can achieve higher accuracy. The choice of oversampling is because with little data, undersampling will further reduce the amount of data and potentially reduce accuracy. With the SMOTE oversampling method, the minority class (in this case is class “1” or leaving the company) will be added to the amount of data by creating synthesized data.
 
-**Tahapan membangun model XGBoost**
+**Steps of building the XGBoost model**
 
-1. Import algoritma XGBoost.
-2. Proses pelatihan/fitting model menggunakan x_train dan y_train yang telah dibagi sebelumnya.
-3. Memprediksi data testing dengan model yang telah dilatih.
+1. Import the XGBoost algorithm.
+2. Model training/fitting process using the previously divided x_train and y_train.
+3. Predicting the testing data with the trained model.
 
-Setelah model dilatih dan membuat prediksi dari data testing, model dievaluasi dengan beberapa metrik yang akan dibahas lebih lanjut hasilnya dibagian evaluasi. Hasil evaluasi akan menentukan apakah model yang dibuat sudah baik.
+After the model is trained and makes predictions from the testing data, the model is evaluated with several metrics that will be discussed further in the evaluation section. The evaluation results will determine whether the model is good.
 
 ## Evaluation
-Model yang telah dibuat akan dievaluasi dengan berbagai metrik, yaitu precision, recall, f1-score, accuracy, dan roc-auc score.
+The model that has been created will be evaluated with various metrics, namely precision, recall, f1-score, accuracy, and roc-auc score.
 
-Selain itu digunakan juga confusion matrix untuk melihat nilai true positive, true negative, false positive, dan false negative.
+In addition, confusion matrix is also used to see the value of true positive, true negative, false positive, and false negative.
 
-**Metrik yang digunakan pada proyek ini:**
+**Metrics used in this project:**
 
-Accuracy: Accuracy adalah metrik yang paling umum digunakan untuk mengukur kinerja model machine learning. Accuracy didefinisikan sebagai proporsi data uji yang diklasifikasikan dengan benar oleh model.
+Accuracy: Accuracy is the most commonly used metric to measure the performance of machine learning models. Accuracy is defined as the proportion of test data that is correctly classified by the model.
 
-$$Accuracy = (True Positives + True Negatives) / (Total Number of Cases)$$
+$$ Accuracy = (True Positives + True Negatives) / (Total Number of Cases) $$
 
-Recall: Recall adalah metrik yang mengukur kemampuan model untuk mendeteksi kasus positif. Recall didefinisikan sebagai proporsi kasus positif (atau pada kasus ini, karyawan yang keluar dari perusahaan) yang diklasifikasikan dengan benar oleh model. 
+Recall: Recall is a metric that measures the model's ability to detect positive cases. Recall is defined as the proportion of positive cases (or in this case, employees who left the company) that are correctly classified by the model. 
 
-$$Recall = True Positives / (True Positives + False Negatives)$$
+$$ Recall = True Positives / (True Positives + False Negatives) $$
 
-Precision: Precision adalah metrik yang mengukur kemampuan model untuk mendeteksi kasus positif yang benar-benar positif. Precision didefinisikan sebagai proporsi kasus positif yang diklasifikasikan oleh model sebagai kasus positif yang benar-benar positif.
+Precision: Precision is a metric that measures the model's ability to detect true positive cases. Precision is defined as the proportion of positive cases classified by the model as true positive cases.
 
-$$Precision = True Positives / (True Positives + False Positives)$$
+$$ Precision = True Positives / (True Positives + False Positives) $$
 
-AUC-ROC: AUC-ROC (Area Under the Receiver Operating Characteristic Curve) adalah metrik yang mengukur kinerja model machine learning pada tugas klasifikasi biner. AUC-ROC dihitung dengan membuat grafik True Positive Rate (TPR) terhadap False Positive Rate (FPR) pada berbagai ambang batas, dan kemudian menghitung luas di bawah kurva yang dihasilkan.
+AUC-ROC: AUC-ROC (Area Under the Receiver Operating Characteristic Curve) is a metric that measures the performance of machine learning models on binary classification tasks. AUC-ROC is calculated by graphing the True Positive Rate (TPR) against the False Positive Rate (FPR) at various thresholds, and then calculating the area under the resulting curve.
 
-$$AUC-ROC = ∫_0^1 TPR(t) dt$$
+$$ AUC-ROC = ∫_0^1 TPR(t) dt $$
 
-F1-score: F1-score adalah kombinasi dari precision dan sensitivity/recall.
+F1-score: F1-score is a combination of precision and sensitivity/recall.
 
-$$F1-score = 2 * (Precision * Recall) / (Precision + Recall)$$
+$$ F1-score = 2 * (Precision * Recall) / (Precision + Recall) $$
 
-**Hasil Pengukuran Metrik**
+**Metric Measurement Results**
 
-Berdasarkan hasil pengukuran metrik pada algoritma XGBoost, algoritma telah menunjukkan performa yang cukup baik dalam mengidentifikasi kedua kelas dengan akurasi 0,83 dan nilai precision, recall, serta f1-score yang juga mencapai 0,72. Skor AUC juga menunjukkan kinerja model yang cukup baik dengan skor 0,72. Ini menunjukkan bahwa model mampu memprediksi potensi attrition seorang karyawan secara umum, tetapi karena ketidakseimbangan data, model kesulitan untuk memprediksi kelas "1" atau attrition.
+Based on the results of the metric measurements on the XGBoost algorithm, the algorithm has shown a fairly good performance in identifying both classes with an accuracy of 0.83 and precision, recall, and f1-score values that also reached 0.72. The AUC score also shows a fairly good model performance with a score of 0.72. This shows that the model is able to predict the potential attrition of an employee in general, but due to data imbalance, the model struggles to predict class “1” or attrition.
 
 ## Prediction
-Model dapat diuji dengan file 'Prediction' yang akan memprediksi status attrtition karyawan dengan model XGBoost yang telah disimpan dalam file .pkl. Untuk memprediksi, cukup menjalankan kode dan mengubah baris data yang ingin diprediksi dengan mengganti nilai variabel 'row_index'. File ini akan memperlihatkan hasil prediksi dengan label sebenarnya.
+The model can be tested with the 'Prediction' file which will predict an employee's attrtition status with the XGBoost model that has been saved in the .pkl file. To predict, simply run the code and change the row of data you want to predict by changing the value of the variable 'row_index'. This file will show the prediction results with the actual labels.
 
 ## Conclusion
-Dari exploration data analysis yang dilakukan (Baik dari kode Python dan Dashboard PowerBI), terdapat insight sebagai berikut:
+From the exploration of data analysis conducted (both from Python code and PowerBI Dashboard), there are the following insights:
 
-- Faktor yang paling berpengaruh terhadap attrition adalah usia muda, berada pada departmen atau posisi tertentu, jarak dari rumah, banyaknya perjalanan bisnis, status pernikahan, kepuasan karyawan dengan pekerjaan (hubungan dengan rekan kerja, keterlibatan, lingkungan, dll), work-life balance, adanya lembur, lama bersama manajer, dan jumlah training. Penjelasan akan dijabarkan pada poin-poin selanjutnya.
+- The most influential factors for attrition are young age, being in a certain department or position, distance from home, number of business trips, marital status, employee satisfaction with work (relationship with coworkers, engagement, environment, etc.), work-life balance, overtime, length of time with manager, and amount of training. Explanations will be provided in the following points.
 
-- Jumlah attrition (keluarnya karyawan dari perusahaan) yang dialami perusahaan mencapai 179 karyawan atau 16.9% dari jumlah karyawan. Jumlah ini cukup tinggi karena dapat mempengaruhi kinerja perusahaan jika tidak diatasi (20% merupakan batas tinggi).
+- The number of attrition experienced by the company reached 179 employees or 16.9% of the total number of employees. This number is quite high because it can affect the company's performance if not addressed (20% is a high limit).
 
-- Jumlah karyawan laki-laki dan perempuan cukup seimbang dengan persentase 59% dan 41% untuk masing-masingnya. Mengenai jumlah attrition, karyawan laki-laki cenderung lebih banyak keluar dari perusahaan. Tetapi jumlah ini tidak berbeda jauh dengan karyawan perempuan sehingga gender tidak mempengaruhi keluarnya karyawan secara keseluruhan.
+- The number of male and female employees is quite balanced with a percentage of 59% and 41% for each. Regarding the number of attrition, male employees tend to leave the company more. But this number is not much different from female employees so gender does not affect the overall employee exit.
 
-- Jumlah attrition paling banyak berasal dari karyawan dengan range usia 20 - 30 tahun. Hal ini dapat disebabkan karena pada usia tersebut, karyawan cenderung fokus untuk mengembangkan karir daripada stabilitas. Ini dapat terlihat dari tren attrition yang menurun semakin tua usianya.
+- The highest number of attrition comes from employees with an age range of 20 - 30 years. This can be caused because at that age, employees tend to focus on developing careers rather than stability. This can be seen from the decreasing trend of attrition the older the age.
 
-- Attrition paling banyak terjadi pada department sales mencapai 20.7% dengan perbedaan sekitar 5% jika dibandingkan dengan department lainnya. Ini dapat disebabkan karena beratnya beban kerja sales.
+- Attrition is most prevalent in the sales department reaching 20.7% with a difference of about 5% when compared to other departments. This could be due to the heavy workload of sales department.
 
-- Jika dibandingkan per gender, karyawan perempuan di department human resources dan sales lebih banyak keluar dari perusahaan. Sedangkan karyawan laki-laki di department RnD paling banyak keluar dari perusahaan.
+- When compared by gender, the number of female employees in the human resources and sales departments who leave is higher. While male employees in the RnD department leave the company the most.
 
-- Semakin jauh jarak kantor dari rumah, semakin besar kemungkinan karyawan untuk keluar dari perusahaan. Hal ini dapat disebabkan oleh besarnya biaya transportasi dan faktor lainnya.
+- The farther the office is from home, the more likely employees are to leave the company. This can be caused by high transportation costs and other factors.
 
-- Jika dilihat berdasarkan gender, baik laik-laki atau perempuan akan lebih berpotensi keluar jika jarak kantor jauh dari tempat tinggal, sehingga tidak ada hubungan dengan gender.
+- When viewed by gender, both men and women will be more likely to leave if the office is far from their residence, so there is no relationship with gender.
 
-- Semakin banyak perjalanan bisnis yang dilakukan, karyawan berpotensi lebih besar untuk keluar dari perusahaan. Ini dapat disebabkan oleh kelelahan perjalanan.
+- The more business trips taken, the greater the potential for employees to leave the company. This can be caused by travel fatigue.
 
-- Status pernikahan menjadi salah satu faktor yang mempengaruhi keluarnya karyawan dari perusahaan, karyawan lajang paling banyak keluar dari perusahaan sedangkan karyawan yang telah bercerai lebih jarang keluar. Ini dapat disebabkan oleh kecenderungan tidak adanya tanggungan pada karyawan yang lajang sehingga mereka daapt lebih bebas mencari kesempatan lain sedangkan untuk karyawan yang telah menikah atau bercerai, mereka telah biasanya telah memiliki tanggungan (misal, pasangan atau anak). Hal ini tidak dipengaruhi oleh gender karena pada laki-laki dan perempuan, tren yang sama dapat terlihat.
+- Marital status is one of the factors that influence employee departure from the company, single employees leave the company the most while divorced employees leave less often. This could be due to the tendency of single employees not having dependents so they can be more free to look for other opportunities while for married or divorced employees, they already usually have dependents (e.g. spouse or children). This is not influenced by gender as for both men and women, the same trend can be seen.
 
-- Karyawan yang telah memiliki lebih banyak pengalaman bekerja lebih cenderung untuk meninggalkan perusahaan, tetapi perbedaannya tidak jauh dengan karyawan dengan pengalaman lebih sedikit.
+- Employees who have had more work experience are more likely to leave the company, but the difference is not much with employees with less experience.
 
-- Level pendidikan karyawan tidak terlalu mempengaruhi keluarnya mereka dari perusahaan. Karyawan dengan level edukasi kategori 5 memang memiliki tingkat attrition yang lebih rendah, tetapi ini bukanlah sebuah tren jika dilihat dari kategori lainnya.
+- The education level of employees does not affect their exit from the company much. Employees with an education level of category 5 do have a lower attrition rate, but this is not a trend when viewed from other categories.
 
-- Kepuasan karyawan dengan lingkungan kerja menjadi salah satu faktor mereka keluar dari perusahaan. Semakin kecil kepuasan mereka terhadap lingkungan kerja, semakin besar potensi mereka keluar dari perusahaan.
+- Employees' satisfaction with the work environment is one of the factors they leave the company. The less satisfied they are with the work environment, the greater their potential to leave the company.
 
-- Perasaan terlibat dengan pekerjaan menjadi salah satu faktor mereka bertahan dalam perusahaan. Semakin banyak kontribusi mereka, semakin kecil peluang mereka keluar dari perusahaan. Ini dapat disebabkan oleh keinginan karyawan untuk berkembang dan berkontribusi pada job desk mereka masing-masing.
+- Feeling engaged with work is one of the factors they stay in the company. The more they contribute, the less likely they are to leave the company. This can be caused by employees' desire to grow and contribute to their respective job desks.
 
-- Walau tren naik turun, ada kecenderungan dimana karyawan dengan jabatan lebih tinggi akan bertahan di perusahaan.
+- Although the trend goes up and down, there is a tendency that employees with higher positions will stay with the company.
 
-- Posisi sales representative, sales executive, human resources, laboratory technician, dan research scientist mengalami attrition yang cukup besar jika dibandingkan posisi lainnya. Attrition paling tinggi terjadi pada karyawan di posisi sales representative yang kemungkinan disebabkan oleh tingginya tekanan.
+- The positions of sales representative, sales executive, human resources, laboratory technician, and research scientist experience considerable attrition compared to other positions. Attrition is highest for employees in the sales representative position which may be due to high pressure.
 
-- Kepuasan karyawan terhadap pekerjaan mereka memiliki pengaruh dalam peluang mereka keluar dari perusahaan. Semakin puas mereka terhadap pekerjaan mereka, karyawan akan cenderung bertahan.
+- Employees' satisfaction with their jobs has an influence on their chances of leaving the company. The more satisfied they are with their jobs, the more likely employees are to stay.
 
-- Work-life balance cukup mempengaruhi keputusan karyawan untuk mengundurkan diri. Semakin baik work-life balance, semakin kecil kesempatan karyawan untuk keluar dari perusahaan walaupun attrition meningkat pada karyawan yang memberi nilai 4.
+- Work-life balance moderately influences employees' decision to resign. The better the work-life balance, the less likely employees are to leave the company although attrition increases for employees who score 4.
 
-- Gaji karyawan (per jam atau bulan) tidak terlalu mempengaruhi keputusan mereka untuk keluar dari perusahaan.
+- Employees' salaries (hourly or monthly) do not greatly influence their decision to leave the company.
 
-- Kenaikan gaji karyawan tidak terlalu mempengaruhi keputusan mereka untuk keluar dari perusahaan.
+- Employee salary increases do not greatly influence their decision to leave the company.
 
-- Rating kinerja karyawan tidak terlalu mempengaruhi keputusan mereka untuk keluar dari perusahaan.
+- Employee performance ratings do not greatly influence their decision to leave the company.
 
-- Karyawan yang menjalani lembur jauh lebih berpotensi untuk keluar dari perusahaan. Hal ini dapat disebabkan oleh kelelahan bekerja.
+- Employees who work overtime are much more likely to leave the company. This can be caused by work fatigue.
 
-- Karyawan yang memiliki waktu kerja lebih sedikit bersama manager mereka lebih berpotensi untuk meninggalkan perusahaan. Ini dapat disebabkan oleh ketidakcocokan atau tidak terbentuknya chemistry yang tepat diantara karyawan dan manager.
+- Employees who have less working time with their manager are more likely to leave the company. This could be due to a mismatch or not having the right chemistry between the employee and manager.
 
-- Lama karyawan di perusahaan tidak memiliki banyak pengaruh terhadap peluang mereka keluar dari perusahaan.
+- An employee's length of time in the company does not have much influence on their chances of leaving the company.
 
-- Lama promosi tidak memiliki banyak pengaruh terhadap peluang karyawan keluar dari perusahaan.
+- Length of promotion does not have much influence on the chances of employees leaving the company.
 
-- Banyaknya training karyawan dalam setahun tidak terlalu mempengaruhi peluang keluarnya karyawan. Perbedaan hanya terlihat pada karyawan yang tidak diberikan training sama sekali. Jika karyawan diberikan training, peluang mereka pergi akan lebih kecil.
+- The amount of employee training in a year does not really affect the chances of employee departure. The difference is only seen in employees who are not given training at all. If employees are given training, their chances of leaving will be smaller.
 
-- Hubungan baik dengan rekan kerja memiliki pengaruh yang tidak terlalu besar terhadap peluang karyawan keluar dari perusahaan. Tetapi, semakin baik hubungan karyawan dengan rekan kerjanya, akan semakin kecil peluang mereka untuk keluar (walaupun tren meningkat sedikit pada karyawan yang memberi nilai 4).
+- Good relationships with coworkers have little influence on the chances of employees leaving the company. However, the better the employee's relationship with their coworkers, the less likely they are to leave (although the trend increases slightly for employees who give a score of 4).
 
-### Rekomendasi Action Items 
-Dari insight yang telah didapatkan dari data, terlihat bahwa tingkat attrition pada perusahaan cukup tinggi sehingga diperlukan tindakan untuk mengatasi masalah tersebut. Beberapa saran dibawah dapat dipertimbangkan untuk meningkatkan performa perusahaan:
+### Recommended Action Items 
+From the insights that have been obtained from the data, it can be seen that the attrition rate in the company is quite high so action is needed to overcome the problem. Some of the suggestions below can be considered to improve the company's performance:
 
-**Menangani Tingkat Attrition Secara Keseluruhan:**
-- Lakukan survei berkala untuk mengidentifikasi aspek-aspek yang perlu diperbaiki dalam lingkungan kerja. Ciptakan budaya kerja yang positif dan suportif.
+**Tackle the Overall Attrition Rate:**
+- Conduct periodic surveys to identify aspects that need improvement in the work environment. Create a positive and supportive work culture.
 
-- Meningkatkan program pengembangan dan pelatihan karyawan untuk membantu mereka berkembang dan merasa tertantang dalam pekerjaan mereka. Sediakan program training dan pengembangan yang berkualitas dan relevan.
-- Memperjelas visi, misi, dan nilai-nilai perusahaan untuk meningkatkan rasa keterlibatan karyawan. Buat karyawan merasa bahwa kontribusi mereka menghasilkan sesuatu yang baik bagi perusahaan dan diri mereka. Manfaatkan program penghargaan dan pengakuan untuk menghargai kontribusi karyawan. 
-- Menerapkan kebijakan jam kerja yang fleksibel.
-- Mendukung cuti dan program keseimbangan kehidupan kerja lainnya.
-- Membatasi lembur sebisa mungkin. Salah satu caranya adalah menerapkan alur kerja yang lebih efektif dan efisien sehingga memperkecil kebutuhan lembur.
-- Melakukan riset pasar untuk memastikan gaji dan benefit yang ditawarkan kompetitif.
-- Meningkatkan komunikasi antara manajer dan karyawan, serta mendorong kerjasama dan kolaborasi antar karyawan. Salah satu caranya adalah dengan melakukan kegiatan team building bagi karyawan atau memberikan pelatihan kepemimpinan dan pengembangan tim bagi pimpinan.
-- Melakukan proses promosi yang transparan dan adil. Pertimbangkan kinerja, pengalaman, dan skill karyawan dalam proses promosi. Berikan kesempatan bagi karyawan untuk berkembang dan mengambil peran yang lebih besar dalam perusahaan.
+- Improve employee development and training programs to help them grow and feel challenged in their work. Provide quality and relevant training and development programs.
+- Clarify the company's vision, mission and values to increase employees' sense of engagement. Make employees feel that their contributions result in something good for the company and themselves. Utilize reward and recognition programs to reward employee contributions. 
+- Implement a flexible working hours policy.
+- Support leave and other work-life balance programs.
+- Limit overtime as much as possible. One way is to implement more effective and efficient workflows that minimize the need for overtime.
+- Conduct market research to ensure salaries and benefits are competitive.
+- Improve communication between managers and employees, and encourage cooperation and collaboration between employees. One way is to conduct team building activities for employees or provide leadership and team development training for leaders.
+- Conduct a transparent and fair promotion process. Consider employee performance, experience, and skills in the promotion process. Provide opportunities for employees to grow and take a bigger role in the company.
 
-**Menangani Masalah Karyawan di Department Sales:**
-- Mengurangi beban kerja sales dengan meningkatkan efisiensi proses penjualan.
+**Handling Employee Problems in the Sales Department:**
+- Reduce sales workload by improving sales process efficiency.
 
-- Meningkatkan komisi dan insentif untuk sales yang berprestasi.
+- Increase commissions and incentives for outstanding sales.
 
-**Membantu Karyawan yang Bekerja Jauh:**
-- Memberikan tunjangan transportasi atau kompensasi lain untuk membantu karyawan yang bekerja jauh.
+**Help Remote Employees:**
+- Provide transportation allowance or other compensation to help remote employees.
 
-- Meningkatkan teknologi komunikasi dan kolaborasi untuk membantu karyawan yang bekerja jauh tetap terhubung dengan tim mereka.
-- Membatasi perjalanan bisnis untuk hal yang penting untuk meminimalisir kelelahan karyawan serta penggunaan resources perusahaan.
+- Improve communication and collaboration technologies to help remote employees stay connected with their teams.
+- Limit business travel to essentials to minimize employee fatigue and use of company resources.
 
-**Mempertahankan Karyawan yang Memiliki Banyak Pengalaman Kerja:**
-- Menawarkan program pengembangan karir yang menantang dan berdampak bagi karyawan dengan pengalaman kerja yang banyak.
-- Memberikan kesempatan bagi karyawan dengan pengalaman kerja yang tinggi untuk mengambil peran kepemimpinan dalam perusahaan.
+**Retain employees with a lot of work experience:**
+- Offer challenging and impactful career development programs for employees with extensive work experience.
+- Provide opportunities for employees with high work experience to take on leadership roles within the company.
 
-**Memperbaiki Tingkat Attrition Karyawan di Posisi Tertentu:**
-- Melakukan analisis lebih lanjut untuk mengidentifikasi alasan spesifik attrition pada posisi tertentu, seperti sales representative (yang paling urgent), sales executive, human resources, laboratory technician, dan research scientist.
-- Mengembangkan program intervensi yang ditargetkan untuk mengatasi alasan-alasan spesifik tersebut.
+**Improve Employee Attrition Rates in Specific Positions:**
+- Conduct further analysis to identify specific reasons for attrition in certain positions, such as sales representative (most urgent), sales executive, human resources, laboratory technician, and research scientist.
+- Develop targeted intervention programs to address these specific reasons.
 
